@@ -1,0 +1,2 @@
+# Ignore folders that begin with underscore anywhere in the repo
+_*/
