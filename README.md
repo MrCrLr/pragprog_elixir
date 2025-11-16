@@ -9,9 +9,9 @@ of [functional programming](https://en.wikipedia.org/wiki/Functional_programming
 and the fact that concurrency could be accomplished so simply. So, this is my 
 first step towards learning.
 
-So far I am enjoying the slightly new way of thinking and I am 
-already feeling some inspiration to create something new. I look
-forward to sharing my progress along the way here in this repository.
+So far I am enjoying the slightly new way of thinking and I am already feeling some 
+inspiration to create something new. I look forward to sharing my progress along 
+the way here in this repository as I proceed through the book typing up the examples
+and following along with the exercises.
 
-Once I finish this book I will likely be looking into [Network Programming in Elixir and Erlang]
-(https://pragprog.com/titles/alnpee/network-programming-in-elixir-and-erlang/)
+Once I finish this book I will likely be looking into [Network Programming in Elixir and Erlang](https://pragprog.com/titles/alnpee/network-programming-in-elixir-and-erlang/)
