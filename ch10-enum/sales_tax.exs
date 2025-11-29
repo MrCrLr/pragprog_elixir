@@ -3,7 +3,7 @@ defmodule SalesTax do
   
   def process(orders) do
     for order <- orders do 
-      total = add_tax(order, @tax_rates)
+      total = Float.round(add_tax(order, @tax_rates), 2)
       order ++ [total_amount: total]
     end
   end
