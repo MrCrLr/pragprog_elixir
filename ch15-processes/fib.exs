@@ -7,7 +7,7 @@ defmodule Scheduler do
 
   defp schedule_processes(processes, queue, results) do
     receive do
-      {:ready, pid} when length(queue) > 0 ->
+      {:ready, pid} when queue != [] ->
         [next | tail] = queue
         send(pid, {:fib, next, self()})
         schedule_processes(processes, tail, results)
