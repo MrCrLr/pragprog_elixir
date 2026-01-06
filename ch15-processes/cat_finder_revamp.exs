@@ -19,24 +19,32 @@ defmodule Scheduler do
     end
   end
 
-  defp schedule_processes(processes, queue, results) do
+  defp schedule_processes(processes, q, results) do
     receive do
-      {:ready, pid} when queue != [] ->
-        [next | tail] = queue
-        send(pid, {:work, next, self()})
-        schedule_processes(processes, tail, results)
+      {:ready, pid} -> 
+        case q do
+          [next | tail] ->
+            send(pid, {:work, next, self()})
+            schedule_processes(processes, tail, results)
 
-      {:ready, pid} ->
-        send(pid, {:shutdown})
-
-        if length(processes) > 1 do
-          schedule_processes(List.delete(processes, pid), queue, results)
-        else
-          Enum.sort(results, fn {n1,_}, {n2,_} -> n1 <= n2 end)
+          [ ] ->
+            shutdown(pid, processes, results)
         end
 
       {:answer, item, result, _pid} ->
-        schedule_processes(processes, queue, [{item, result} | results])
+        schedule_processes(processes, q, [{item, result} | results])
+    end
+  end
+
+  defp shutdown(pid, processes, results) do
+    send(pid, {:shutdown})
+
+    case processes do
+      [_last] -> 
+        Enum.sort_by(results, fn {item, _} -> item end)
+
+      _ ->
+        schedule_processes(List.delete(processes, pid), [], results)
     end
   end
 end
