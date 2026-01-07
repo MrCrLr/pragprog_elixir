@@ -1,0 +1,16 @@
+$ iex --sname nick
+iex(nick@nick-btfd)1> jeff = :global.whereis_name :jeff
+#PID<13785.76.0>
+iex(nick@nick-btfd)2> IO.puts(jeff, "Hello")
+:ok
+iex(nick@nick-btfd)3> IO.puts(jeff, "World!")
+:ok
+
+
+$ iex --sname jeff 
+iex(jeff@nick-btfd)1> Node.connect(:"nick@nick-btfd")
+true
+iex(jeff@nick-btfd)2> :global.register_name(:jeff, :erlang.group_leader)
+:yes
+Hello
+World!
