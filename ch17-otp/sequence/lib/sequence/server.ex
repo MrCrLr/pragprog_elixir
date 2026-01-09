@@ -1,6 +1,32 @@
 defmodule Sequence.Server do
   use GenServer
 
+  #####
+  # External API
+
+  def start_link(current_number) do
+    GenServer.start_link(__MODULE__, current_number, name: __MODULE__)
+  end
+
+  def next_number do
+    GenServer.call __MODULE__, :next_number
+  end
+
+  def set_number(new_number) do
+    GenServer.call __MODULE__, {:set_number, new_number}
+  end
+
+  def ranger_rick(number) do
+    GenServer.call __MODULE__, {:range, number}
+  end
+
+  def increment_number(delta) do
+    GenServer.cast __MODULE__, {:increment_number, delta}
+  end
+
+  #####
+  # GenServer implementation
+
   def init(initial_number) do
     {:ok, initial_number}
   end
@@ -13,10 +39,16 @@ defmodule Sequence.Server do
     {:reply, new_number, new_number}
   end
 
-  def handle_call({:range, number}, _, _) do
-    {:reply, {:range_to, 
-              number, 
-              Enum.map(1..number, fn x -> 
-                       x * 2 end)}, []}
+  def handle_call({:range, number}, _from, current_number) do
+    new_state = Enum.map(current_number..number, fn x -> x * 2 end) |> Enum.sum
+    {:reply, new_state, new_state}
+  end
+
+  def handle_cast({:increment_number, delta}, current_number) do
+    {:noreply, current_number + delta}
+  end
+
+  def format_status(_reason, [_pdict, state]) do
+    [data: [{'State', "My current state is '#{inspect state}', and I'm happy"}]]
   end
 end
