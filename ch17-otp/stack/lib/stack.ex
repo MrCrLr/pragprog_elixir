@@ -6,8 +6,9 @@ defmodule Stack do
   end
 
   def pop(),      do: GenServer.call(@server, :pop)
-  def push(item), do: GenServer.cast(@server, {:push, item})
   def peek(),     do: GenServer.call(@server, :peek)
-  def print(),    do: GenServer.call(@server, :print)
-
+  def snapshot(), do: GenServer.call(@server, :snapshot)
+  def push(item), do: GenServer.cast(@server, {:push, item})
+  def quit(),     do: GenServer.stop(@server, :normal) 
 end
+
