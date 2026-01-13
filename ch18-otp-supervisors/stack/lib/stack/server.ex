@@ -1,13 +1,14 @@
 defmodule Stack.Server do
   use GenServer
   alias Stack.Impl
+  alias Stack.Stash
 
-  def start_link(initial_stack) do
-    GenServer.start_link(__MODULE__, initial_stack, name: __MODULE__)
+  def start_link(_) do
+    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
-  def init(initial_stack) do
-    {:ok, initial_stack}
+  def init(_) do
+    {:ok, Stash.get()}
   end
 
   def handle_call(:pop, _from, stack) do
@@ -22,12 +23,17 @@ defmodule Stack.Server do
     Impl.snapshot(stack)
   end
 
+  def handle_call(:quit, from, stack) do
+    Impl.quit(from, stack)
+    {:stop, :normal, :ok, stack}
+  end
+
   def handle_cast({:push, item}, stack) do
     Impl.push(item, stack)
   end
   
-  def terminate(reason, stack) do
-    Impl.report(reason, stack)
+  def terminate(_reason, stack) do
+    Stash.update(stack)
     :ok
   end
 end

@@ -6,11 +6,12 @@ defmodule Stack.Impl do
   def peek([top | _] = stack), do: {:reply, {:ok, top}, stack}
   def snapshot(stack),         do: {:reply, {:ok, stack}, stack} 
   def push(item, stack),       do: {:noreply, [item | stack]}
+  def quit(from, stack),       do: report(from, stack)
 
-  def report(reason, stack) do
-    IO.puts("terminate/2 called")
-    IO.puts("  reason: #{inspect(reason)}")
-    IO.puts("  state:  #{inspect(stack)}")
+  defp report(from, stack) do
+    IO.puts("Program quit by user.")
+    IO.puts("  from:  #{inspect(from)}")
+    IO.puts("  state: #{inspect(stack)}")
     cleanup(stack)
   end
   defp cleanup(_stack),         do: :ok
