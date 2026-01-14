@@ -1,5 +1,5 @@
 defmodule Stack.Server do
-  use GenServer
+  use GenServer, restart: :transient
   alias Stack.Impl
   alias Stack.Stash
 
@@ -26,6 +26,11 @@ defmodule Stack.Server do
   def handle_call(:quit, from, stack) do
     Impl.quit(from, stack)
     {:stop, :normal, :ok, stack}
+  end
+
+  def handle_cast(:crash, stack) do
+    Impl.crash({self(), :cast}, stack)
+    {:stop, :boom, stack}
   end
 
   def handle_cast({:push, item}, stack) do

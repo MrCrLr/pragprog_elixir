@@ -1,5 +1,5 @@
 defmodule Stack.Stash do
-  use GenServer
+  use GenServer, restart: :transient
 
   @me __MODULE__
 
