@@ -8,7 +8,7 @@ defmodule Stack.Application do
 
     children = [
       {Stack.Stash, initial_stack},
-      {Stack.Server, nil},
+      {Stack.Server, []},
     ]
 
     opts = [strategy: :one_for_one, name: Stack.Supervisor]

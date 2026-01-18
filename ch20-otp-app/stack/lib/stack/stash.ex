@@ -3,16 +3,17 @@ defmodule Stack.Stash do
 
   @me __MODULE__
 
-  def start_link(initial_stack) do
-    GenServer.start_link(__MODULE__, initial_stack, name: @me)
+  def start_link(initial_stack, opts \\ []) do
+    name = Keyword.get(opts, :name, @me)
+    GenServer.start_link(__MODULE__, initial_stack, name: name)
   end
 
-  def get() do
-    GenServer.call(@me, {:get})
+  def get(server \\ @me) do
+    GenServer.call(server, {:get})
   end
 
-  def update(new_stack) do
-    GenServer.cast(@me, {:update, new_stack})
+  def update(server \\ @me, new_stack) do
+    GenServer.cast(server, {:update, new_stack})
   end
 
   # Stash server implementation

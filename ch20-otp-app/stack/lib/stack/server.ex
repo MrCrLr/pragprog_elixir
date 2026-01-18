@@ -3,12 +3,14 @@ defmodule Stack.Server do
   alias Stack.Impl
   alias Stack.Stash
 
-  def start_link(_) do
-    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
+  def start_link(opts \\ []) do
+    name = Keyword.get(opts, :name, __MODULE__)
+    GenServer.start_link(__MODULE__, nil, name: name)
   end
 
   def init(_) do
-    {:ok, Stash.get()}
+    stash = Application.get_env(:stack, :stash, Stash)
+    {:ok, Stash.get(stash)}
   end
 
   def handle_call(:pop, _from, stack) do
