@@ -18,8 +18,8 @@ defmodule Duper.PathFinder do
   def handle_call(:next_path, _from, dir_walker) do
     path = 
       case DirWalker.next(dir_walker) do
-        [path] -> path
-        other  -> other
+        [path] when is_binary(path) -> path
+        _  -> nil
       end
     {:reply, path, dir_walker}
   end

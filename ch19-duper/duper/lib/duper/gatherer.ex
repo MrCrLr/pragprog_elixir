@@ -33,6 +33,11 @@ defmodule Duper.Gatherer do
   def handle_cast(:done, _worker_count = 1) do
     report_results()
     System.halt(0)
+    {:noreply, 0}
+  end
+  
+  def handle_cast(:done, worker_count) when worker_count > 1 do
+    {:noreply, worker_count - 1}
   end
 
   def handle_cast({:result, path, hash}, worker_count) do

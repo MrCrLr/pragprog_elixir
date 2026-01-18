@@ -6,9 +6,9 @@ defmodule Duper.Application do
   def start(_type, _args) do
     children = [
        Duper.Results,
-      {Duper.PathFinder, "."},
+      {Duper.PathFinder, "/Users/nickstevens/Library/Mobile Documents/com~apple~CloudDocs"},
        Duper.WorkerSupervisor,
-      {Duper.Gatherer, 1},
+      {Duper.Gatherer, 8},
     ]
 
     opts = [strategy: :one_for_all, name: Duper.Supervisor]
